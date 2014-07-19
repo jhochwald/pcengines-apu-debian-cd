@@ -9,26 +9,58 @@ my own servers.
 
 Changes
 -------
-Changes from i386 to amd64 installation
-Changed the partitioning incl. LVM
-Optimize the software selection a bit
-Add an local User to use instead of root
+* Changes from i386 to amd64 installation
+* Changed the partitioning incl. LVM
+* Add a swap partition
+* Extend the software selection
+* Add an local User to use instead of root
+* Remove clean text passwords
 
 Installation
 ------------
+```Shell
+apt-get update && apt-get -V upgrade
+
+updatedb
+
+apt-get install -y simple-cdd git
+
 mkdir /opt/pcengines
 cd /opt/pcengines
-git clone https://github.com/jhochwald/pcengines-apu-debian-cd.git .
-build-simple-cdd --conf profiles/apu.conf --dist wheezy --force-root
-dd if=images/debian-7.6-amd64-CD-1.iso of=/dev/sdb bs=1M
 
+git clone https://github.com/jhochwald/pcengines-apu-debian-cd.git .
+
+build-simple-cdd --conf profiles/apu.conf --dist wheezy --force-root
+
+dd if=images/debian-7.6-amd64-CD-1.iso of=/dev/sdb bs=1M
+```
 
 This is a fork of: https://github.com/ssinyagin/pcengines-apu-debian-cd
 
+NO WARRANTY
+-----------
+BECAUSE THIS PROGRAM IS AVAILABLE FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.  EXCEPT WHEN
+OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS
+TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE
+PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING,
+REPAIR OR CORRECTION.
+ 
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES,
+INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING
+OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED
+TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
+YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
+PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES.
 
----------------------------------------------
 Here is the original README File of ssinyagin
----------------------------------------------
+=============================================
 
 This is a set of configuration files for building a Debian installation
 CD optimized for the APU platform of PC Engines:
