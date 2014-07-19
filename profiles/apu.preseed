@@ -64,11 +64,11 @@ popularity-contest popularity-contest/participate boolean false
 
 d-i debian-installer/locale string en_US.UTF-8
 d-i debian-installer/language string en
-d-i debian-installer/country string CH
+d-i debian-installer/country string DE
 
 ### Clock and time zone setup
 d-i clock-setup/utc boolean true
-d-i time/zone string Europe/Zurich
+d-i time/zone string Europe/Berlin
 
 passwd   passwd/root-password    password pcengines
 passwd   passwd/root-password-again  password pcengines
@@ -76,8 +76,8 @@ passwd   passwd/root-password-again  password pcengines
 
 d-i mirror/protocol string http
 d-i mirror/country string manual
-d-i mirror/http/hostname string mirror.switch.ch 
-d-i mirror/http/directory string /ftp/mirror/debian
+d-i mirror/http/hostname string mirror.1und1.de
+d-i mirror/http/directory string /debian
 d-i mirror/http/proxy string
 d-i mirror/suite string wheezy
 
