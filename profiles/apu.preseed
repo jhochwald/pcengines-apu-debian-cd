@@ -8,9 +8,12 @@ d-i passwd/make-user boolean false
 # Any hostname and domain names assigned from dhcp take precedence over
 # values set here. However, setting the values still prevents the questions
 # from being shown, even if values come from dhcp.
+d-i netcfg/choose_interface select auto
 d-i netcfg/get_hostname string unassigned-hostname
+d-i netcfg/hostname string unassigned-hostname
 d-i netcfg/get_domain string unassigned-domain
 
+d-i hw-detect/load_firmware boolean true
 
 # Automatically label the disk without asking
 d-i partman-auto/choose_recipe select boot-root
@@ -104,16 +107,21 @@ d-i clock-setup/ntp-server string 0.de.pool.ntp.org
 
 # Allow ROOT Logins, we might change this later!
 passwd   passwd/root-login boolean true
+#passwd   passwd/root-password    password pcengines
+#passwd   passwd/root-password-again  password pcengines
+# Password is password
+# Use "mkpasswd -m sha-512 password" to create another one
+d-i passwd/root-password-crypted password $6$j19r/FvN$OBu3iB87PJugSKCBpRcu/ejSrjS/weoCYBEfGmKxDAYFs27sjMgUxyVaJcP9CmsFrDBWjjpTqE.LzOL4LNM/Z/
 
-passwd   passwd/root-password    password pcengines
-passwd   passwd/root-password-again  password pcengines
 
 # create a normal user account
+d-i passwd/make-user boolean true
 d-i passwd/user-fullname string MyHotspot Admin
 d-i passwd/username string apadmin
 d-i passwd/user-password password insecure
-d-i passwd/user-password-again password insecure
-d-i user-setup/allow-password-weak  boolean true
+# Password is password
+# Use "mkpasswd -m sha-512 password" to create another one
+d-i passwd/user-password-crypted password $6$j19r/FvN$OBu3iB87PJugSKCBpRcu/ejSrjS/weoCYBEfGmKxDAYFs27sjMgUxyVaJcP9CmsFrDBWjjpTqE.LzOL4LNM/Z/
 d-i user-setup/encrypt-home boolean false
 
 d-i mirror/protocol string http
@@ -126,16 +134,25 @@ d-i mirror/suite string wheezy
 # Just the default is installed
 tasksel tasksel/first multiselect standard
 
+### Apt setup
+d-i apt-setup/non-free boolean true
+d-i apt-setup/contrib boolean true
+d-i apt-setup/services-select multiselect security, volatile
+d-i apt-setup/security_host string security.debian.org
+d-i apt-setup/volatile_host string volatile.debian.org
+
 # software
-d-i pkgsel/include string vim openssh-server
+d-i pkgsel/include string vim rsync openssh-server
 
 # Configure APT to not install recommended packages by default. Use of this
 # option can result in an incomplete system and should only be used by very
 # experienced users.
 d-i base-installer/install-recommends boolean false
 
-d-i     pkgsel/upgrade  select safe-upgrade
-d-i     pkgsel/update-policy    select none
+d-i pkgsel/upgrade select full-upgrade
+#d-i pkgsel/update-policy select none
+d-i pkgsel/update-policy select unattended-upgrades
+d-i pkgsel/updatedb boolean true
 
 # Some versions of the installer can report back on what software you have
 # installed, and what software you use. The default is not to report back,
