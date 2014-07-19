@@ -11,7 +11,28 @@ At the moment I try to use the amd64 distribution instead of the i386
 the ssinyagin uses. This should use the full power of the new PC Engines
 APU boards.
 
+Changes
+-------
+Changes from i386 to amd64 installation
+Changed the partitioning incl. LVM
+Optimize the software selection a bit
+Add an local User to use instead of root
+
+Installation
+------------
+mkdir /opt/pcengines
+cd /opt/pcengines
+git clone https://github.com/jhochwald/pcengines-apu-debian-cd.git .
+build-simple-cdd --conf profiles/apu.conf --dist wheezy --force-root
+dd if=images/debian-7.6-amd64-CD-1.iso of=/dev/sdb bs=1M
+
+
+
 This is a fork of: https://github.com/ssinyagin/pcengines-apu-debian-cd
+
+--------------------------------
+Here is the original README File
+--------------------------------
 
 This is a set of configuration files for building a Debian installation
 CD optimized for the APU platform of PC Engines:

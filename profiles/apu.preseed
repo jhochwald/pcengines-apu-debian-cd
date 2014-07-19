@@ -8,7 +8,8 @@ d-i passwd/make-user boolean false
 # Any hostname and domain names assigned from dhcp take precedence over
 # values set here. However, setting the values still prevents the questions
 # from being shown, even if values come from dhcp.
-d-i netcfg/get_hostname string apu
+d-i netcfg/get_hostname string unassigned-hostname
+d-i netcfg/get_domain string unassigned-domain
 
 
 # Automatically label the disk without asking
@@ -48,7 +49,7 @@ d-i partman-auto/expert_recipe string                         \
                       mountpoint{ / }                         \
                       options/noatime{ noatime }              \
               .                                               \
-              8000 8000 200% linux-swap                       \
+              4000 4000 200% linux-swap                       \
                       $lvmok{ }                               \
                       method{ swap } format{ }                \
               .
@@ -77,6 +78,11 @@ d-i base-installer/kernel/image string linux-image-686-pae
 # popular and include it on CDs.
 popularity-contest popularity-contest/participate boolean false
 
+# By default the installer requires that repositories be authenticated
+# using a known gpg key. This setting can be used to disable that
+# authentication. Warning: Insecure, not recommended.
+d-i debian-installer/allow_unauthenticated boolean true
+
 #####
 ## Things you may want to change ##
 
@@ -92,13 +98,21 @@ d-i console-setup/ask_detect boolean false
 d-i clock-setup/utc boolean true
 d-i time/zone string Europe/Berlin
 
+# NTP Settings
+d-i clock-setup/ntp boolean true
+d-i clock-setup/ntp-server string 0.de.pool.ntp.org
+
+# Allow ROOT Logins, we might change this later!
 passwd   passwd/root-login boolean true
 
 passwd   passwd/root-password    password pcengines
 passwd   passwd/root-password-again  password pcengines
 
-# user
-d-i passwd/user-fullname string apadmin
+# create a normal user account
+d-i passwd/user-fullname string MyHotspot Admin
+d-i passwd/username string apadmin
+d-i passwd/user-password password insecure
+d-i passwd/user-password-again password insecure
 d-i user-setup/allow-password-weak  boolean true
 d-i user-setup/encrypt-home boolean false
 
@@ -109,10 +123,22 @@ d-i mirror/http/directory string /debian
 d-i mirror/http/proxy string
 d-i mirror/suite string wheezy
 
+# Just the default is installed
+tasksel tasksel/first multiselect standard
+
+# software
 d-i pkgsel/include string vim openssh-server
+
+# Configure APT to not install recommended packages by default. Use of this
+# option can result in an incomplete system and should only be used by very
+# experienced users.
+d-i base-installer/install-recommends boolean false
 
 d-i     pkgsel/upgrade  select safe-upgrade
 d-i     pkgsel/update-policy    select none
 
-
-
+# Some versions of the installer can report back on what software you have
+# installed, and what software you use. The default is not to report back,
+# but sending reports helps the project determine what software is most
+# popular and include it on CDs.
+popularity-contest popularity-contest/participate boolean false
