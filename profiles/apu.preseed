@@ -22,7 +22,14 @@ d-i partman-auto/purge_lvm_from_device boolean true
 d-i partman-lvm/confirm boolean true
 
 # Disk partitioning method
-d-i partman-auto/method string regular
+#d-i partman-auto/method string regular
+d-i partman-auto/method string lvm
+
+# LVM Part
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-lvm/device_remove_lvm_span boolean true
+d-i partman-auto/purge_lvm_from_device  boolean true
+d-i partman-auto-lvm/new_vg_name string system
 
 # Custom partition layout: both /boot and root in ext4, with noatime option
 d-i partman-auto/expert_recipe string                         \
@@ -35,16 +42,27 @@ d-i partman-auto/expert_recipe string                         \
                       options/noatime{ noatime }              \
               .                                               \
               500 10000 1000000000 ext4                       \
+                      $lvmok{ }                               \
                       method{ format } format{ }              \
                       use_filesystem{ } filesystem{ ext4 }    \
                       mountpoint{ / }                         \
                       options/noatime{ noatime }              \
+              .                                               \
+              8000 8000 200% linux-swap                       \
+                      $lvmok{ }                               \
+                      method{ swap } format{ }                \
               .
 
 # Skip question about not having swap partition
-partman-basicfilesystems partman-basicfilesystems/no_swap boolean false
+#partman-basicfilesystems partman-basicfilesystems/no_swap boolean false
 
+# LVM Part
+d-i partman-lvm/confirm boolean true
+d-i partman/confirm_write_new_label boolean true
+d-i partman/choose_partition select Finish partitioning and write changes to disk
+d-i partman/confirm boolean true
 
+#
 d-i grub-installer/with_other_os  boolean false
 
 
@@ -65,14 +83,24 @@ popularity-contest popularity-contest/participate boolean false
 d-i debian-installer/locale string en_US.UTF-8
 d-i debian-installer/language string en
 d-i debian-installer/country string DE
+d-i debian-installer/splash boolean false
+d-i debian-installer/exit/halt boolean true
+d-i debian-installer/exit/poweroff boolean false
 
 ### Clock and time zone setup
+d-i console-setup/ask_detect boolean false
 d-i clock-setup/utc boolean true
 d-i time/zone string Europe/Berlin
+
+passwd   passwd/root-login boolean true
 
 passwd   passwd/root-password    password pcengines
 passwd   passwd/root-password-again  password pcengines
 
+# user
+d-i passwd/user-fullname string apadmin
+d-i user-setup/allow-password-weak  boolean true
+d-i user-setup/encrypt-home boolean false
 
 d-i mirror/protocol string http
 d-i mirror/country string manual
@@ -81,7 +109,10 @@ d-i mirror/http/directory string /debian
 d-i mirror/http/proxy string
 d-i mirror/suite string wheezy
 
-d-i pkgsel/include string openssh-server
+d-i pkgsel/include string vim openssh-server
+
+d-i     pkgsel/upgrade  select safe-upgrade
+d-i     pkgsel/update-policy    select none
 
 
 
