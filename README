@@ -4,6 +4,8 @@ Debian installer CD for PC Engines APU board with mSATA drive
 Introduction
 ------------
 
+This is a fork of: https://github.com/ssinyagin/pcengines-apu-debian-cd
+
 This is a set of configuration files for building a Debian installation
 CD optimized for the APU platform of PC Engines:
 http://www.pcengines.ch/apu.htm
