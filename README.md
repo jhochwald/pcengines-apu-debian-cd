@@ -9,15 +9,15 @@ my own servers.
 
 Changes
 -------
-* Changes from i386 to amd64 installation
+* Changed from i386 to amd64 installation
 * Changed the partitioning incl. LVM
 * Add a swap partition
 * Extend the software selection
 * Add an local User to use instead of root
 * Remove clean text passwords
 
-Installation
-------------
+Create the ISO image
+--------------------
 ```Shell
 apt-get update && apt-get -V upgrade
 
@@ -34,6 +34,45 @@ build-simple-cdd --conf profiles/apu.conf --dist wheezy --force-root
 
 dd if=images/debian-7.6-amd64-CD-1.iso of=/dev/sdb bs=1M
 ```
+
+Create the USB Stick
+--------------------
+```Shell
+# check where your USB stick is
+fdisk -l
+
+# copy the installer CD image
+dd if=images/debian-7.6-amd64-CD-1.iso of=/dev/sdX bs=1M
+```
+
+Install
+-------
+Attach the USB Stick to your APU Server and power it on.
+You might need to press F12 to change the boot order!
+
+You might get the following message:
+```
+Undefined video mode number: 314
+Press <ENTER> to see video modes available, <SPACE> to continue, or wait 30 sec
+```
+Just ignore it (wait 30 seconds) or press space.
+
+Hint
+----
+At the moment, my ISO image is configured to wait after the installation is done.
+I use this to remove the USB Stick before I reboot the APU.
+You might want to change this by changing the following line:
+```Shell
+d-i debian-installer/exit/halt boolean true
+```
+to
+```Shell
+d-i debian-installer/exit/halt boolean false
+```
+You will find this line here: profiles/apu.preseed
+
+Please note, that this work is licensed under the MIT License (MIT) license and
+that there is no Warranty, and I mean absolutely no warranties!!!
 
 This is a fork of: https://github.com/ssinyagin/pcengines-apu-debian-cd
 
@@ -59,8 +98,13 @@ YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
 PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
-Here is the original README File of ssinyagin
-=============================================
+Here is the original README File of ssinyagin:
+```
+Debian installer CD for PC Engines APU board with mSATA drive
+=============================================================
+
+Introduction
+------------
 
 This is a set of configuration files for building a Debian installation
 CD optimized for the APU platform of PC Engines:
@@ -172,3 +216,4 @@ Author
 ------
 Stanislav Sinyagin
 ssinyagin@k-open.com
+```
