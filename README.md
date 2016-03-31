@@ -1,10 +1,9 @@
 Debian installer USB Stick for PC Engines APU board with mSATA drive
 ====================================================================
 
-We have moved
--------------
-I decided to move this repository from here to http://dev.hochwald.net/pcengines-apu-debian-iso
-http://dev.hochwald.net/ is hosted at bitbucket.org
+Sorry we are closed
+-------------------
+I no longer update the stuff here! I recommend to take a look at Stanislav Sinyagin (ssinyagin) repository.
 
 Introduction
 ------------
